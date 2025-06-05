@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高级个人简历 | 多语言切换</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* 全局样式 */
+        :root {
+            --primary: #8a5cea;
+            --secondary: #61dafb;
+            --dark: #0a0a14;
+            --darker: #05050b;
+            --light: #f0f0ff;
+            --accent: #ff2e63;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --lang-bg: rgba(15, 15, 25, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--light);
+            line-height: 1.8;
+            background-color: var(--darker);
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(138, 92, 234, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 30%, rgba(97, 218, 251, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 25% 85%, rgba(255, 46, 99, 0.08) 0%, transparent 18%);
+            transition: background-color 0.5s ease;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* 粒子背景 */
+        #particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* 导航栏 */
+        header {
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 20, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+            transition: var(--transition);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--light);
+            text-decoration: none;
+            position: relative;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 语言切换按钮 */
+        .language-switcher {
+            position: relative;
+            z-index: 1001;
+        }
+
+        .lang-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--lang-bg);
+            border: 1px solid rgba(138, 92, 234, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            font-weight: 700;
+            color: var(--secondary);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .lang-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(138, 92, 234, 0.3);
+            background: rgba(25, 25, 40, 0.8);
+        }
+
+        .lang-btn:active {
+            transform: scale(0.95);
+        }
+
+        .lang-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .lang-btn.active:before {
+            animation: pulse 0.6s forwards;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.7;
+            }
+            70% {
+                transform: scale(1.3);
+                opacity: 0.2;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--light);
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        /* Hero部分 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 700px;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            margin-bottom: 1.5rem;
+            position: relative;
+            line-height: 1.1;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeUp 1s cubic-bezier(0.22, 0.61, 0.36, 1) forwards 0.3s;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            color: rgba(240, 240, 255, 0.8);
+            margin-bottom: 2.5rem;
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeUp 1s cubic-bezier(0.22, 0.61, 0.36, 1) forwards 0.5s;
+        }
+
+        .hero-title::after {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            bottom: -15px;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: rgba(240, 240, 255, 0.7);
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 1.5s;
+        }
+
+        .scroll-text {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .scroll-icon {
+            width: 30px;
+            height: 50px;
+            border: 2px solid rgba(240, 240, 255, 0.7);
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .scroll-icon::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 12px;
+            background: var(--secondary);
+            border-radius: 2px;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scroll 2s infinite;
+        }
+
+        /* 卡片区域 */
+        .cards-section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 70px;
+            position: relative;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: rgba(15, 15, 25, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(50px);
+            opacity: 0;
+            border: 1px solid rgba(138, 92, 234, 0.1);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            top: -60px;
+            right: -60px;
+            border-radius: 50%;
+            opacity: 0.1;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(138, 92, 234, 0.2);
+            border: 1px solid rgba(138, 92, 234, 0.3);
+        }
+
+        .card:hover::before {
+            opacity: 0.2;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            background: linear-gradient(to bottom right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .card-content {
+            color: rgba(240, 240, 255, 0.85);
+        }
+
+        .card-content ul {
+            padding-left: 20px;
+            margin-top: 15px;
+        }
+
+        .card-content li {
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .card-content li::before {
+            content: '▹';
+            position: absolute;
+            left: -20px;
+            color: var(--secondary);
+        }
+
+        /* 联系方式 */
+        .contact-section {
+            padding: 100px 0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        .contact-card {
+            padding: 40px;
+            background: rgba(15, 15, 25, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(97, 218, 251, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+            bottom: -60px;
+            left: -60px;
+            border-radius: 50%;
+            opacity: 0.1;
+            transition: var(--transition);
+        }
+
+        .contact-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .contact-title::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: var(--secondary);
+            bottom: -10px;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        .contact-info {
+            margin-top: 30px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(97, 218, 251, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.2rem;
+            color: var(--secondary);
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: rgba(240, 240, 255, 0.6);
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .contact-card a {
+            color: var(--secondary);
+            transition: var(--transition);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .contact-card a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            background: var(--secondary);
+            bottom: -3px;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .contact-card a:hover {
+            color: #a6f3ff;
+        }
+
+        .contact-card a:hover::after {
+            width: 100%;
+        }
+
+        /* 页脚 */
+        footer {
+            background: rgba(5, 5, 11, 0.9);
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: rgba(15, 15, 25, 0.6);
+            color: var(--light);
+            font-size: 1.4rem;
+            transition: var(--transition);
+            border: 1px solid rgba(138, 92, 234, 0.2);
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px);
+            background: var(--primary);
+            box-shadow: 0 10px 20px rgba(138, 92, 234, 0.3);
+        }
+
+        .copyright {
+            color: rgba(240, 240, 255, 0.6);
+            font-size: 1rem;
+        }
+
+        /* 动画 */
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translate(-50%, 0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, 20px);
+                opacity: 0;
+            }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+            }
+
+            .language-switcher {
+                position: absolute;
+                top: 10px;
+                right: 70px;
+            }
+
+            .hero-title {
+                font-size: 3.5rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .card {
+                padding: 30px;
+            }
+
+            .contact-card {
+                padding: 30px;
+            }
+
+            .lang-btn {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 粒子背景 -->
+    <canvas id="particles"></canvas>
+
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">个人简历</a>
+                <div class="language-switcher">
+                    <div class="lang-btn" id="languageBtn">
+                        <span id="langText">EN</span>
+                    </div>
+                </div>
+                <button class="menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero区域 -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title" data-i18n="name">王俊</h1>
+                <p class="hero-subtitle" data-i18n="subtitle">广东石油化工学院 · 人工智能专业</p>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <span class="scroll-text" data-i18n="scrollText">继续滚动查看更多信息</span>
+            <div class="scroll-icon"></div>
+        </div>
+    </section>
+
+    <!-- 个人信息卡片 -->
+    <section class="cards-section">
+        <div class="container">
+            <h2 class="section-title" data-i18n="personalInfo">个人信息</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="card-title" data-i18n="education">教育背景</h3>
+                    <div class="card-content">
+                        <p><strong data-i18n="uniName">广东石油化工学院</strong></p>
+                        <p data-i18n="major">人工智能专业</p>
+                        <p data-i18n="period">2023-2027(本科)</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="card-title" data-i18n="skills">专业技能</h3>
+                    <div class="card-content">
+                        <ul>
+                            <li data-i18n="skill1">Python</li>
+                            <li data-i18n="skill2">深度学习</li>
+                            <li data-i18n="skill3">神经网络</li>
+                            <li data-i18n="skill4">计算机视觉</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3 class="card-title" data-i18n="experience">经历</h3>
+                    <div class="card-content">
+                        <p>
+                            <strong data-i18n="eventName">中国机器人大赛暨RoboCup机器人世界杯中国赛——机器人先进视觉——3D识别项目</strong> -
+                            <span data-i18n="award">二等奖</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系方式 -->
+    <section class="contact-section">
+        <div class="container">
+            <h2 class="section-title" data-i18n="contact">联系方式</h2>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <h3 class="contact-title" data-i18n="contactTitle">联系我</h3>
+                    <p data-i18n="contactDesc">如果您对我的经历感兴趣，或希望与我联系，请随时使用以下联系方式。</p>
+
+                    <div class="contact-info">
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="info-content">
+                                <div class="info-label" data-i18n="phoneLabel">手机</div>
+                                <div class="info-value">(+86)19075677031</div>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="info-content">
+                                <div class="info-label" data-i18n="emailLabel">邮箱</div>
+                                <div class="info-value">
+                                    <a href="mailto:1968579582@qq.com">1968579582@qq.com</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-card">
+                    <h3 class="contact-title" data-i18n="socialTitle">其他联系方式</h3>
+                    <p data-i18n="socialDesc">您也可以通过以下社交平台与我取得联系：</p>
+
+                    <div class="contact-info">
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fab fa-weixin"></i>
+                            </div>
+                            <div class="info-content">
+                                <div class="info-label" data-i18n="wechatLabel">微信</div>
+                                <div class="info-value">a2576487821</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="social-icons">
+                <a href="https://github.com/AIjun123" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <p class="copyright">© 2025 <span data-i18n="footer">王俊个人简历. 保留所有权利</span></p>
+        </div>
+    </footer>
+
+    <!-- 粒子系统脚本 -->
+    <script>
+        // 当文档加载完成时执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 语言设置
+            let currentLanguage = localStorage.getItem('language') || 'zh';
+            const languageBtn = document.getElementById('languageBtn');
+            const langText = document.getElementById('langText');
+
+            // 初始化语言显示
+            updateLanguageButton();
+
+            // 切换语言函数
+            function toggleLanguage() {
+                currentLanguage = currentLanguage === 'zh' ? 'en' : 'zh';
+                localStorage.setItem('language', currentLanguage);
+                updateLanguageButton();
+                updateContent();
+
+                // 添加动画效果
+                languageBtn.classList.add('active');
+                setTimeout(() => {
+                    languageBtn.classList.remove('active');
+                }, 600);
+            }
+
+            // 更新语言按钮显示
+            function updateLanguageButton() {
+                langText.textContent = currentLanguage === 'zh' ? 'EN' : '中';
+                languageBtn.style.backgroundColor = currentLanguage === 'zh'
+                    ? 'rgba(15, 15, 25, 0.8)'
+                    : 'rgba(138, 92, 234, 0.2)';
+            }
+
+            // 更新页面内容
+            function updateContent() {
+                const elements = document.querySelectorAll('[data-i18n]');
+
+                // 先添加淡出效果
+                document.body.style.opacity = 0;
+
+                // 短暂延迟后更新文本并淡入
+                setTimeout(() => {
+                    elements.forEach(el => {
+                        const key = el.getAttribute('data-i18n');
+                        if (translations[key]) {
+                            el.textContent = translations[key][currentLanguage] || el.textContent;
+                        }
+                    });
+
+                    document.body.style.opacity = 1;
+                }, 300);
+            }
+
+            // 翻译字典
+            const translations = {
+                "name": {
+                    "zh": "王俊",
+                    "en": "Jun Wang"
+                },
+                "subtitle": {
+                    "zh": "广东石油化工学院 · 人工智能专业",
+                    "en": "Guangdong Petrochemical Institute · Artificial Intelligence"
+                },
+                "scrollText": {
+                    "zh": "继续滚动查看更多信息",
+                    "en": "Scroll down for more information"
+                },
+                "personalInfo": {
+                    "zh": "个人信息",
+                    "en": "Personal Information"
+                },
+                "education": {
+                    "zh": "教育背景",
+                    "en": "Education"
+                },
+                "uniName": {
+                    "zh": "广东石油化工学院",
+                    "en": "Guangdong Petrochemical Institute"
+                },
+                "major": {
+                    "zh": "人工智能专业",
+                    "en": "Artificial Intelligence"
+                },
+                "period": {
+                    "zh": "2023-2027(本科)",
+                    "en": "2023-2027(Bachelor)"
+                },
+                "skills": {
+                    "zh": "专业技能",
+                    "en": "Technical Skills"
+                },
+                "skill1": {
+                    "zh": "Python",
+                    "en": "Python"
+                },
+                "skill2": {
+                    "zh": "深度学习",
+                    "en": "Deep Learning"
+                },
+                "skill3": {
+                    "zh": "神经网络",
+                    "en": "Neural Networks"
+                },
+                "skill4": {
+                    "zh": "计算机视觉",
+                    "en": "Computer Vision"
+                },
+                "experience": {
+                    "zh": "经历",
+                    "en": "Experience"
+                },
+                "eventName": {
+                    "zh": "中国机器人大赛暨RoboCup机器人世界杯中国赛——机器人先进视觉——3D识别项目",
+                    "en": "China Robot Competition & RoboCup China Open - Advanced Robot Vision - 3D Recognition Project"
+                },
+                "award": {
+                    "zh": "二等奖",
+                    "en": "Second Prize"
+                },
+                "contact": {
+                    "zh": "联系方式",
+                    "en": "Contact"
+                },
+                "contactTitle": {
+                    "zh": "联系我",
+                    "en": "Contact Me"
+                },
+                "contactDesc": {
+                    "zh": "如果您对我的经历感兴趣，或希望与我联系，请随时使用以下联系方式。",
+                    "en": "If you are interested in my experience or wish to contact me, please use the contact information below."
+                },
+                "socialTitle": {
+                    "zh": "其他联系方式",
+                    "en": "Social Media"
+                },
+                "socialDesc": {
+                    "zh": "您也可以通过以下社交平台与我取得联系：",
+                    "en": "You can also reach me through the following social platforms:"
+                },
+                "phoneLabel": {
+                    "zh": "手机",
+                    "en": "Phone"
+                },
+                "emailLabel": {
+                    "zh": "邮箱",
+                    "en": "Email"
+                },
+                "wechatLabel": {
+                    "zh": "微信",
+                    "en": "WeChat"
+                },
+                "footer": {
+                    "zh": "王俊个人简历. 保留所有权利",
+                    "en": "Jun Wang Personal Portfolio. All Rights Reserved"
+                }
+            };
+
+            // 初始更新内容
+            if (localStorage.getItem('language')) {
+                updateContent();
+            }
+
+            // 绑定事件
+            languageBtn.addEventListener('click', toggleLanguage);
+
+            // 粒子系统
+            const canvas = document.getElementById('particles');
+            const ctx = canvas.getContext('2d');
+
+            // 设置canvas尺寸
+            function setupCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            // 设置粒子
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2.5 + 0.5;
+                    this.speedX = (Math.random() - 0.5) * 0.4;
+                    this.speedY = (Math.random() - 0.5) * 0.4;
+                    this.color = `rgba(138, 92, 234, ${Math.random() * 0.8})`;
+                }
+
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+
+                    // 边界检查
+                    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                        this.reset();
+                    }
+                }
+
+                draw() {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            // 创建粒子
+            const particles = [];
+            const particleCount = canvas.width / 4;
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+
+            // 动画循环
+            function animate() {
+                ctx.fillStyle = 'rgba(5, 5, 11, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach(particle => {
+                    particle.update();
+                    particle.draw();
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            // 处理窗口大小调整
+            window.addEventListener('resize', () => {
+                setupCanvas();
+            });
+
+            // 滚动动画
+            function animateOnScroll() {
+                const sections = document.querySelectorAll('.section-title, .card, .contact-card');
+                const windowHeight = window.innerHeight;
+                const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+
+                sections.forEach(section => {
+                    const elementTop = section.getBoundingClientRect().top + scrollPosition;
+
+                    if (scrollPosition + windowHeight * 0.8 > elementTop) {
+                        section.style.opacity = '1';
+                        section.style.transform = 'translateY(0)';
+                    }
+                });
+            }
+
+            // 初始化
+            setupCanvas();
+            animate();
+            animateOnScroll();
+
+            // 监听滚动事件
+            window.addEventListener('scroll', animateOnScroll);
+        });
+    </script>
+</body>
+</html>
